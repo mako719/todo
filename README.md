@@ -31,6 +31,19 @@ API の転送先は環境変数 `API_URL`、Java 側のポートは `PORT` で�
 | DELETE | `/api/todos/{id}` | | 削除 |
 | POST | `/api/todos/clear-done` | | 完了済みを一括削除 |
 
+## GitHub Pages 版
+
+https://mako719.github.io/todo/
+
+GitHub Pages では Java を動かせないため、TODO はブラウザの localStorage に保存されます（見る人のブラウザごとに別のデータ）。
+`main` に push すると、GitHub Actions（`.github/workflows/deploy-pages.yml`）が次の環境変数でビルドして公開します。
+
+| 環境変数 | 役割 |
+|---|---|
+| `GITHUB_PAGES=true` | 静的エクスポート（`output: "export"`）でビルドする |
+| `PAGES_BASE_PATH=/todo` | URL の先頭にリポジトリ名を付ける |
+| `NEXT_PUBLIC_STORAGE=local` | 保存先を Java API から localStorage に切り替える（`frontend/src/lib/api.ts`） |
+
 ## コマンドライン版の実行
 
 ```sh

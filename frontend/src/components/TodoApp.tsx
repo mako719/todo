@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type FormEvent } from "react";
-import { api, type Todo } from "@/lib/api";
+import { api, isLocalStorage, type Todo } from "@/lib/api";
 import TodoItem from "./TodoItem";
 
 type Filter = "all" | "open" | "done";
@@ -12,8 +12,9 @@ const FILTERS: { value: Filter; label: string }[] = [
   { value: "done", label: "完了" },
 ];
 
-const CONNECTION_ERROR =
-  "API サーバーに接続できません。プロジェクト直下で ./run.sh serve を実行してください。";
+const LOAD_ERROR = isLocalStorage
+  ? "保存データを読み込めませんでした。ブラウザのサイトデータの設定を確認してください。"
+  : "API サーバーに接続できません。プロジェクト直下で ./run.sh serve を実行してください。";
 
 export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -27,7 +28,7 @@ export default function TodoApp() {
     api
       .list()
       .then(setTodos)
-      .catch(() => setError(CONNECTION_ERROR))
+      .catch(() => setError(LOAD_ERROR))
       .finally(() => setLoading(false));
   }, []);
 
@@ -167,6 +168,12 @@ export default function TodoApp() {
             完了済みを削除
           </button>
         </div>
+      )}
+
+      {isLocalStorage && (
+        <p className="text-center text-xs text-zinc-400">
+          データはこのブラウザ内に保存されます
+        </p>
       )}
     </div>
   );
