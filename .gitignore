@@ -1,0 +1,7 @@
+# ビルド成果物
+out/
+# 実行時のデータ
+todos.tsv
+# IntelliJ IDEA
+.idea/
+*.iml
